@@ -9,3 +9,4 @@
   ➜  Network: use --host to expose
 10:08:01 AM [vite] (client) hmr update /src/pages/events/EventDetailsPage.jsx, /src/index.css
 10:20:47 AM [vite] (client) hmr update /src/pages/events/EventDetailsPage.jsx, /src/index.css
+3:12:03 PM [vite] (client) hmr update /src/pages/auth/LoginPage.jsx, /src/pages/user/MyRegistrationsPage.jsx, /src/pages/user/ProfilePage.jsx, /src/pages/user/DashboardPage.jsx, /src/pages/auth/SignupPage.jsx, /src/pages/events/EventDetailsPage.jsx, /src/pages/admin/AdminDashboardPage.jsx, /src/pages/admin/CreateAdminPage.jsx, /src/pages/admin/ManageEventsPage.jsx, /src/pages/admin/CreateEventPage.jsx, /src/pages/admin/ParticipantsListPage.jsx, /src/components/layout/Navbar.jsx, /src/index.css
