@@ -13,12 +13,10 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public DatabaseSeeder(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public DatabaseSeeder(RoleRepository roleRepository, UserRepository userRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -40,10 +38,14 @@ public class DatabaseSeeder implements CommandLineRunner {
             User adminUser = User.builder()
                     .name("Super Admin")
                     .email("admin@gmail.com")
-                    .password(passwordEncoder.encode("admin123"))
+                    .password("admin123")
                     .role(adminRole)
                     .isSubscribed(false)
                     .build();
+            userRepository.save(adminUser);
+        } else {
+            User adminUser = userRepository.findByEmail("admin@gmail.com").get();
+            adminUser.setPassword("admin123");
             userRepository.save(adminUser);
         }
     }
