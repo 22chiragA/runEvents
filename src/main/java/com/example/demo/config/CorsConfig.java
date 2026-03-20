@@ -17,9 +17,7 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOriginPatterns(Arrays.asList(
-                "http://localhost:*", "http://127.0.0.1:*",
-                "https://*.vercel.app", "https://run-events.vercel.app"));
+        config.setAllowedOriginPatterns(Arrays.asList("*"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(
                 Arrays.asList("Origin", "Content-Type", "Accept", "Authorization", "X-Requested-With"));
