@@ -345,6 +345,22 @@ const EventDetailsPage = () => {
 
       const orderData = await createRazorpayOrder(selectedCat.price);
 
+      // REGISTER THE USER IMMEDIATELY BEFORE PAYMENT
+      try {
+        await api.post(
+          `/registrations/events/${id}/users/${userId}`,
+          {
+            name: regData.name,
+            emailId: regData.emailId,
+            phnNumber: regData.phnNumber,
+            categoryId: Number(regData.categoryId)
+          }
+        );
+        setMessage({ type: 'success', text: 'Successfully registered! Opening payment gateway...' });
+      } catch (err) {
+        throw new Error('Registration failed. ' + (err.response?.data?.message || ''));
+      }
+
       const options = {
         key: orderData.keyId,
         amount: orderData.amount, // amount from backend
@@ -353,21 +369,8 @@ const EventDetailsPage = () => {
         description: `Registration for ${event.name}`,
         order_id: orderData.orderId,
         handler: async (response) => {
-          try {
-            await api.post(
-              `/registrations/events/${id}/users/${userId}`,
-              {
-                name: regData.name,
-                emailId: regData.emailId,
-                phnNumber: regData.phnNumber,
-                categoryId: Number(regData.categoryId)
-              }
-            );
-            setMessage({ type: 'success', text: 'Successfully registered and paid!' });
-            setShowRegForm(false);
-          } catch (err) {
-            setMessage({ type: 'error', text: 'Payment verification saves failed.' });
-          }
+          setMessage({ type: 'success', text: 'Payment completed successfully!' });
+          setShowRegForm(false);
         },
         prefill: {
           name: regData.name,
@@ -378,6 +381,13 @@ const EventDetailsPage = () => {
       };
 
       const rzp = new window.Razorpay(options);
+      
+      // If user closes Razorpay without paying, they are still registered
+      rzp.on('payment.failed', function (response){
+        setMessage({ type: 'error', text: 'Payment failed or cancelled. However, your registration was saved.' });
+        setShowRegForm(false);
+      });
+
       rzp.open();
 
     } catch (err) {
